@@ -10,10 +10,11 @@ class PengajuanController extends Controller
 {
     public function index()
     {
-        $dataPengajuan = Pengajuan::select('nomorBerkas', 'nib', 'namaDesa', 'idTim', 'jenisBerkas', 'totalBidang', 'rusakPengganti', 'status')
-            ->get();
+        $dataPengajuan = Pengajuan::select('nomorBerkas', 'nib', 'namaDesa', 'jenisBerkas', 'totalBidang', 'rusakPengganti', 'status', 'idTim')
+        ->with('tim:id,namaTim') // Eager load the 'tim' relationship with only 'id' and 'namaTim'
+        ->get();
 
-        return view('pengajuan.index', compact('dataPengajuan'));
+        return view('layouts.admin.pengajuan', compact('dataPengajuan'));
     }
 
     public function create()

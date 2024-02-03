@@ -13,15 +13,36 @@ use App\Http\Controllers\PengajuanController;
 |
 */
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KetersediaanController;
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\TimController;
+
+Route::resource('users', UsersController::class);
+
+Route::get('users', [UsersController::class, 'index'])->name('users.index');
+Route::get('users/create', [UsersController::class, 'create'])->name('users.create');
+Route::get('users/{user}/edit', [UsersController::class, 'edit'])->name('users.edit');
+
+Route::resource('tim', TimController::class);
+
+Route::get('tim', [TimController::class, 'index'])->name('tim.index');
+Route::get('tim/create', [TimController::class, 'create'])->name('tim.create');
+Route::get('tim/{tim}/edit', [TimController::class, 'edit'])->name('tim.edit');
+
+Route::resource('ketersediaan', KetersediaanController::class);
+Route::get('/ketersediaan', [KetersediaanController::class, 'index'])->name('ketersediaan.index');
+
 Route::get('/', function () {
     return view('auth.login');
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/admin', [HomeController::class, 'admin'])->name('admin'); // Rename the method to 'admin'
 
-Route::get('/pengajuan', [App\Http\Controllers\PengajuanController::class, 'index'])->name('pengajuan');
-Route::get('/pengajuan/create', [App\Http\Controllers\PengajuanController::class, 'create'])->name('pengajuan.create');
-Route::post('/pengajuan', [App\Http\Controllers\PengajuanController::class, 'store'])->name('pengajuan.store');
-
+Route::get('/pengajuan', [PengajuanController::class, 'index'])->name('pengajuan');
+Route::get('/pengajuan', [PengajuanController::class, 'index'])->name('pengajuan');
+Route::get('/pengajuan/create', [PengajuanController::class, 'create'])->name('pengajuan.create');
+Route::post('/pengajuan', [PengajuanController::class, 'store'])->name('pengajuan.store');

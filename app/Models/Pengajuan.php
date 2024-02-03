@@ -28,6 +28,6 @@ class Pengajuan extends Model
 
     public function tim()
     {
-        return $this->belongsTo(Tim::class, 'idTim');
+        return $this->belongsTo(Tim::class, 'idTim', 'id');
     }
 }

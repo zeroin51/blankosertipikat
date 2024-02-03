@@ -12,6 +12,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function isAdmin()
+    {
+        return $this->idTim === '10'; // Assuming there is a 'role' column in your users table
+    }
     /**
      * The attributes that are mass assignable.
      *
