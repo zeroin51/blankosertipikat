@@ -19,41 +19,26 @@ class PengajuanController extends Controller
 
     public function create()
     {
-        $dataPengajuan = Pengajuan::orderBy('nomorBerkas')->get(['nomorBerkas', 'nib', 'namaDesa', 'idTim', 'jenisBerkas', 'totalBidang', 'rusakPengganti']);
-
-        return view('pengajuan.create', compact('dataPengajuan'));
+        return view('pengajuan.create');
     }
 
-    public function store(Request $request) // Change type-hint to Request
+    public function store(Request $request)
     {
-        $dataPengajuan = $request->get('dataPengajuan');
+        // Validate the request data
+        $validatedData = $request->validate([
+            'nomorBerkas' => 'required|string',
+            'nib' => 'required|string',
+            'namaDesa' => 'required|string',
+            'idTim' => 'required|integer',
+            'jenisBerkas' => 'required|string',
+            'totalBidang' => 'required|integer',
+            'rusakPengganti' => 'required|string',
+            'status' => 'required|string',
+        ]);
 
-        DB::transaction(function () use ($dataPengajuan) { // Change variable name to match usage
-            $ids = collect($dataPengajuan)->pluck('id');
-            if (!empty($ids)) {
-                Pengajuan::whereNotIn('id', $ids)->delete();
-            }
+        // Create a new Pengajuan instance
+        $pengajuan = Pengajuan::create($validatedData);
 
-            foreach ($dataPengajuan as $row) { // Change variable name to match usage
-                if ($row['id']) {
-                    Pengajuan::whereId($row['id'])->update($row);
-                } else {
-                    Pengajuan::create($row);
-                }
-            }
-        });
-
-        if ($request->expectsJson()) {
-            sleep(1);
-            $dataPengajuan = Pengajuan::orderBy('NomorBerkas')
-                ->get(['id', 'nib', 'namaDesa', 'idTim', 'jenisBerkas', 'totalBidang', 'rusakPengganti', 'status', 'created_at']) // Fix 'create_at' to 'created_at'
-                ->transform(function ($item) {
-                    return array_values($item->toArray());
-                });
-
-            return response()->json($dataPengajuan);
-        }
-
-        return redirect()->back()->withSuccess(sprintf("Berhasil menyimpan %d data Pengajuan", count($dataPengajuan)));
+        return redirect()->route('pengajuan.index')->with('success', 'Pengajuan created successfully!');
     }
 }

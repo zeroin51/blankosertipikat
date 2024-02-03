@@ -14,11 +14,6 @@
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" type="text/css"/>
 
-    <!-- Load jExcel and jsuites for jExcel styling -->
-    <script src="https://bossanova.uk/jexcel/v3/jexcel.js"></script>
-    <link rel="stylesheet" href="https://bossanova.uk/jexcel/v3/jexcel.css" type="text/css"/>
-    <script src="https://bossanova.uk/jsuites/v2/jsuites.js"></script>
-    <link rel="stylesheet" href="https://bossanova.uk/jsuites/v2/jsuites.css" type="text/css"/>
 </head>
 <body>
 <div class="content-wrapper">
@@ -49,7 +44,6 @@
                             <td>{{ $pengajuan->jenisBerkas }}</td>
                             <td>{{ $pengajuan->totalBidang }}</td>
                             <td>{{ $pengajuan->rusakPengganti }}</td>
-                            <!-- Add other columns as needed -->
                         </tr>
                     @endforeach
                 </tbody>

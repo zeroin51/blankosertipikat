@@ -18,6 +18,12 @@ use App\Http\Controllers\KetersediaanController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\TimController;
 
+Route::get('/', function () {
+    return view('auth.login');
+});
+
+Auth::routes();
+
 Route::resource('users', UsersController::class);
 
 Route::get('users', [UsersController::class, 'index'])->name('users.index');
@@ -33,16 +39,9 @@ Route::get('tim/{tim}/edit', [TimController::class, 'edit'])->name('tim.edit');
 Route::resource('ketersediaan', KetersediaanController::class);
 Route::get('/ketersediaan', [KetersediaanController::class, 'index'])->name('ketersediaan.index');
 
-Route::get('/', function () {
-    return view('auth.login');
-});
-
-Auth::routes();
-
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/admin', [HomeController::class, 'admin'])->name('admin'); // Rename the method to 'admin'
 
-Route::get('/pengajuan', [PengajuanController::class, 'index'])->name('pengajuan');
 Route::get('/pengajuan', [PengajuanController::class, 'index'])->name('pengajuan');
 Route::get('/pengajuan/create', [PengajuanController::class, 'create'])->name('pengajuan.create');
 Route::post('/pengajuan', [PengajuanController::class, 'store'])->name('pengajuan.store');
