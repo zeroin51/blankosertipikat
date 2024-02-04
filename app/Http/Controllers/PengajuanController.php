@@ -23,22 +23,42 @@ class PengajuanController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'nomorBerkas' => 'required|string',
-            'nib' => 'required|string',
-            'namaDesa' => 'required|string',
-            'idTim' => 'required|integer',
-            'jenisBerkas' => 'required|string',
-            'totalBidang' => 'required|integer',
-            'rusakPengganti' => 'required|string',
-            'status' => 'required|string',
-        ]);
+    {   
+        try {
+            
+            $this->validate($request, [
+                'data.*0' => 'required',
+                'data.*1*' => 'required',
+                'data.*2*' => 'required',
+                'data.*3*' => 'required',
+                'data.*4*' => 'required',
+                'data.*5*' => 'required',
+                'data.*6*' => 'required',
+                'data.*7*' => 'required',
+            ]);
 
-        // Create a new Pengajuan instance
-        $pengajuan = Pengajuan::create($validatedData);
+            $dataFromSpreadsheet = $request->input('data');
+            // Iterasi setiap baris data dan simpan ke dalam database
+            foreach ($dataFromSpreadsheet as $data) {
+                Pengajuan::create([
+                    'nomorBerkas' => $data[0],
+                    'nib' => $data[1],
+                    'namaDesa' => $data[2],
+                    'idTim' => $data[3],
+                    'jenisBerkas' => $data[4],
+                    'totalBidang' => $data[5],
+                    'rusakPengganti' => $data[6],
+                    'status' => $data[7]
+                ]);
+            }
 
-        return redirect()->route('pengajuan.index')->with('success', 'Pengajuan created successfully!');
+            return response()->json(['message' => 'Data berhasil disimpan'], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $errors = $e->validator->errors()->all();
+            return response()->json(['error' => 'Validation error: ' . implode(', ', $errors)], 422);
+        }
+         catch (\Exception $e) {
+            return response()->json(['error' => 'Gagal menyimpan data: ' . $e->getMessage()], 500);
+        }
     }
 }
