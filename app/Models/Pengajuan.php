@@ -17,6 +17,7 @@ class Pengajuan extends Model
         'totalBidang',
         'rusakPengganti',
         'status',
+        'kodePengajuan',
         'create_at',
         'update_at',
     ];

@@ -42,6 +42,11 @@ Route::get('/ketersediaan', [KetersediaanController::class, 'index'])->name('ket
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/admin', [HomeController::class, 'admin'])->name('admin'); // Rename the method to 'admin'
 
+Route::resource('pengajuan', PengajuanController::class);
+
 Route::get('/pengajuan', [PengajuanController::class, 'index'])->name('pengajuan');
+Route::get('/pengajuan', [PengajuanController::class, 'index'])->name('pengajuan.index');
+Route::get('/pengajuan/data', [PengajuanController::class, 'data'])->name('pengajuan.data');
 Route::get('/pengajuan/create', [PengajuanController::class, 'create'])->name('pengajuan.create');
 Route::post('/pengajuan', [PengajuanController::class, 'store'])->name('pengajuan.store');
+Route::put('/pengajuan/change-status/{kodePengajuan}', [PengajuanController::class, 'changeStatus'])->name('pengajuan.change-status');

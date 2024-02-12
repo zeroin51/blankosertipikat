@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('namaDesa');
             $table->integer('idTim');
             $table->string('jenisBerkas');
-            $table->integer('totalBidang');
             $table->string('rusakPengganti');
             $table->timestamps();
         });

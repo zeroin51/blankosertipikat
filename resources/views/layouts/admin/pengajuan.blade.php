@@ -7,6 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Pengajuan</title>
 
     <!-- Load jQuery, DataTables, and DataTables CSS -->
@@ -14,48 +15,78 @@
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" type="text/css"/>
 
+    <!-- Load jExcel and jsuites for jExcel styling -->
+    <script src="https://bossanova.uk/jexcel/v3/jexcel.js"></script>
+    <link rel="stylesheet" href="https://bossanova.uk/jexcel/v3/jexcel.css" type="text/css"/>
+    <script src="https://bossanova.uk/jsuites/v2/jsuites.js"></script>
+    <link rel="stylesheet" href="https://bossanova.uk/jsuites/v2/jsuites.css" type="text/css"/>
 </head>
 <body>
 <div class="content-wrapper">
     <div class="content">
         <div class="container-fluid">
             <h2 class="ui header">Pengajuan</h2>
-
-            <!-- Display Data using DataTables -->
-            <table id="dataTable" class="display">
-                <thead>
-                    <tr>
-                        <th>Nomor Berkas</th>
-                        <th>NIB</th>
-                        <th>Nama Desa</th>
-                        <th>Tim</th>
-                        <th>Jenis Berkas</th>
-                        <th>Total Bidang</th>
-                        <th>Rusak/Pengganti</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($dataPengajuan as $pengajuan)
+                        <table class="table" id="pengajuan-table">
+                    <thead>
                         <tr>
-                            <td>{{ $pengajuan->nomorBerkas }}</td>
-                            <td>{{ $pengajuan->nib }}</td>
-                            <td>{{ $pengajuan->namaDesa }}</td>
-                            <td>{{ $pengajuan['tim']['namaTim'] }}</td>
-                            <td>{{ $pengajuan->jenisBerkas }}</td>
-                            <td>{{ $pengajuan->totalBidang }}</td>
-                            <td>{{ $pengajuan->rusakPengganti }}</td>
+                            <th>Kode Pengajuan</th>
+                            <th>ID Tim</th>
+                            <th>Tanggal</th>
+                            <th>Action</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-            <!-- DataTables Initialization Script -->
+                    </thead>
+                    <tbody>
+                        <!-- Iterasi data pengajuan di sini untuk menampilkan setiap baris -->
+                        @foreach($dataPengajuan as $data)
+                        <tr>
+                            <td>{{ $data->kodePengajuan }}</td>
+                            <td>{{ $data->tim->namaTim }}</td>
+                            <td>{{ $data->created_at }}</td>
+                            <td>
+                                <!-- Button untuk merubah status -->
+                                <button class="change-status" data-kodepengajuan="{{ $data->kodePengajuan }}">Ubah Status</button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             <script>
                 $(document).ready(function() {
-                    $('#dataTable').DataTable();
+                    // Mengambil token CSRF dari meta tag
+                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                    $('#pengajuan-table').DataTable({
+                        // Inisialisasi DataTables
+                        // Tulis kode inisialisasi DataTables di sini
+                    });
+
+                    // Tambahkan event click pada button untuk merubah status
+                    $('#pengajuan-table').on('click', '.change-status', function() {
+                        var kodePengajuan = $(this).data('kodepengajuan');
+                        
+                        // Kirim permintaan AJAX dengan menyertakan token CSRF
+                        $.ajax({
+                            url: '/pengajuan/change-status/' + kodePengajuan,
+                            method: 'PUT',
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken
+                            },
+                            success: function(response) {
+                                // Tampilkan pesan sukses atau lakukan tindakan sesuai kebutuhan
+                                alert(response.message);
+                                // Refresh tabel jika diperlukan
+                                $('#pengajuan-table').DataTable().ajax.reload();
+                            },
+                            error: function(xhr, status, error) {
+                                // Tampilkan pesan error jika diperlukan
+                                alert('Error: ' + error);
+                            }
+                        });
+                    });
                 });
             </script>
         </div>
     </div>
 </div>
+
 @include('layouts.admin.footer')

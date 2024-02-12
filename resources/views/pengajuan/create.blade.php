@@ -29,7 +29,7 @@
         <script>
         
         var datapengajuan = [
-            ['', '', ''],
+            ['', '', '', '', '', '', ''],
         ];
         
         var mySpreadsheet = jspreadsheet(document.getElementById('spreadsheet'), {
@@ -37,16 +37,29 @@
             columns: [
                 { type: 'text', title:'Nomor Berkas', width:120 },
                 { type: 'text', title:'NIB', width:120 },
-                { type: 'text', title:'namaDesa', width:120 },
-                { type: 'numeric', title:'idTim', width:120 },
-                { type: 'text', title:'jenisBerkas', width:120 },
-                { type: 'numeric', title:'totalBidang', width:120 },
-                { type: 'text', title:'rusakPengganti', width:120 },
-                { type: 'text', title:'status', width:120 },
+                { type: 'text', title:'Nama Desa', width:150 },
+                { type: 'numeric', title:'Tim', width:120, },
+                {
+                    type: 'dropdown',
+                    title:'Jenis Berkas',
+                    width:120,
+                    source:[
+                        "PTSL",
+                        "RUTIN",
+                        "LINTOR",
+                    ]
+                },
+                { type: 'numeric', title:'Total Bidang', width:120 },
+                { type: 'text', title:'Rusak / Pengganti', width:150 },
             ]
         }); 
         function ambilDataSpreadsheet() {
             var dataSpreadsheet = mySpreadsheet.getData();
+            var idTim = {{ auth()->user()->idTim }};
+            // Ubah dataSpreadsheet untuk memasukkan idTim ke dalam data yang akan disimpan
+            dataSpreadsheet.forEach(function(row) {
+                row[3] = idTim;
+            });
             storeDataOnServer(dataSpreadsheet);
         }
         function storeDataOnServer(data) {
@@ -62,6 +75,7 @@
                 data: { data: data },
                 success: function(response) {
                     console.log('Data berhasil disimpan di server:', response);
+                    window.location.href = '/home';
                     // Lakukan sesuatu setelah data berhasil disimpan, jika diperlukan
                 },
                 error: function(error) {

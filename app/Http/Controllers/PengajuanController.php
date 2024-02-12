@@ -3,16 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB; // Add this line for DB facade
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Pengajuan;
+use App\Models\ViewPengajuan;
+use Carbon\Carbon;
+use DataTables;
 
 class PengajuanController extends Controller
 {
     public function index()
     {
-        $dataPengajuan = Pengajuan::select('nomorBerkas', 'nib', 'namaDesa', 'jenisBerkas', 'totalBidang', 'rusakPengganti', 'status', 'idTim')
-        ->with('tim:id,namaTim') // Eager load the 'tim' relationship with only 'id' and 'namaTim'
-        ->get();
+        // $dataPengajuan = Pengajuan::select('id', 'nomorBerkas', 'nib', 'namaDesa', 'jenisBerkas', 'totalBidang', 'rusakPengganti', 'created_at', 'status', 'kodePengajuan', 'idTim')
+        // ->with('tim:id,namaTim') // Eager load the 'tim' relationship with only 'id' and 'namaTim'
+        // ->get();
+
+        // return view('layouts.admin.pengajuan', compact('dataPengajuan'));
+
+        $dataPengajuan = ViewPengajuan::select('kodePengajuan', 'idTim', 'created_at')
+            ->orderBy('created_at', 'desc') // Mengurutkan berdasarkan created_at
+            ->get();
 
         return view('layouts.admin.pengajuan', compact('dataPengajuan'));
     }
@@ -34,9 +44,19 @@ class PengajuanController extends Controller
                 'data.*4*' => 'required',
                 'data.*5*' => 'required',
                 'data.*6*' => 'required',
-                'data.*7*' => 'required',
             ]);
+            // Mendapatkan user yang sedang login
+            $user = Auth::user();
+        
+            // Mendapatkan idTim dari user yang sedang login
+            $idTim = $user->idTim;
+            // Mendapatkan tanggal saat ini
+            $tanggalSekarang = Carbon::now()->format('Y-m-d H:i:s');
+        
+            // Membuat kode pengajuan dengan format idTim-tanggalSekarang
+            $kodePengajuan = $idTim . '-' . $tanggalSekarang;
 
+            $dataStatus = "Menunggu";
             $dataFromSpreadsheet = $request->input('data');
             // Iterasi setiap baris data dan simpan ke dalam database
             foreach ($dataFromSpreadsheet as $data) {
@@ -48,7 +68,8 @@ class PengajuanController extends Controller
                     'jenisBerkas' => $data[4],
                     'totalBidang' => $data[5],
                     'rusakPengganti' => $data[6],
-                    'status' => $data[7]
+                    'status' => $dataStatus,
+                    'kodePengajuan' => $kodePengajuan
                 ]);
             }
 
@@ -60,5 +81,24 @@ class PengajuanController extends Controller
          catch (\Exception $e) {
             return response()->json(['error' => 'Gagal menyimpan data: ' . $e->getMessage()], 500);
         }
+    }
+
+    public function changeStatus($kodePengajuan)
+    {
+        try {
+            // Ubah status pengajuan
+            Pengajuan::where('kodePengajuan', $kodePengajuan)->update(['status' => 'ACC']);
+    
+            return response()->json(['message' => 'Status pengajuan berhasil diubah'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Gagal mengubah status pengajuan: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function destroy(Pengajuan $pengajuan)
+    {
+        $pengajuan->delete();
+
+        return redirect()->route('pengajuan')->withSuccess('Pengajuan Ditolak!');
     }
 }
