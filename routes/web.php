@@ -52,5 +52,7 @@ Route::get('/pengajuan/data', [PengajuanController::class, 'data'])->name('penga
 Route::get('/pengajuan/create', [PengajuanController::class, 'create'])->name('pengajuan.create');
 Route::post('/pengajuan', [PengajuanController::class, 'store'])->name('pengajuan.store');
 Route::put('/pengajuan/change-status/{kodePengajuan}', [PengajuanController::class, 'changeStatus'])->name('pengajuan.change-status');
+Route::get('/pengajuan/detail/{kodePengajuan}', [PengajuanController::class, 'detail'])->name('pengajuan.detail');
 
+Route::get('/blanko/data', [BlankoController::class, 'data'])->name('blanko.data');
 Route::get('/blanko', [BlankoController::class, 'index'])->name('blanko.index');

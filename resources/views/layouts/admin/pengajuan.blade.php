@@ -26,30 +26,32 @@
     <div class="content">
         <div class="container-fluid">
             <h2 class="ui header">Pengajuan</h2>
-                        <table class="table" id="pengajuan-table">
-                    <thead>
-                        <tr>
-                            <th>Kode Pengajuan</th>
-                            <th>ID Tim</th>
-                            <th>Tanggal</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Iterasi data pengajuan di sini untuk menampilkan setiap baris -->
-                        @foreach($dataPengajuan as $data)
-                        <tr>
-                            <td>{{ $data->kodePengajuan }}</td>
-                            <td>{{ $data->tim->namaTim }}</td>
-                            <td>{{ $data->created_at }}</td>
-                            <td>
-                                <!-- Button untuk merubah status -->
-                                <button class="change-status" data-kodepengajuan="{{ $data->kodePengajuan }}">Ubah Status</button>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <table class="table" id="pengajuan-table">
+                <thead>
+                    <tr>
+                        <th>Kode Pengajuan</th>
+                        <th>ID Tim</th>
+                        <th>Tanggal</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Iterasi data pengajuan di sini untuk menampilkan setiap baris -->
+                    @foreach($dataPengajuan as $data)
+                    <tr>
+                        <td>{{ $data->kodePengajuan }}</td>
+                        <td>{{ $data->tim->namaTim }}</td>
+                        <td>{{ $data->created_at }}</td>
+                        <td>
+                            <!-- Button untuk merubah status -->
+                            <button class="change-status" data-kodepengajuan="{{ $data->kodePengajuan }}">Ubah Status</button>
+                            <!-- Button untuk menuju ke halaman detail -->
+                            <a href="{{ route('pengajuan.detail', ['kodePengajuan' => $data->kodePengajuan]) }}" class="btn btn-primary">Detail</a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
             <script>
                 $(document).ready(function() {
                     // Mengambil token CSRF dari meta tag

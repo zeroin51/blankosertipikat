@@ -9,11 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengajuan</title>
 
-    <!-- Load jQuery, DataTables, and DataTables CSS -->
+    <!-- Load jQuery and DataTables CSS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" type="text/css"/>
-
 </head>
 <body>
 <div class="content-wrapper">
@@ -33,31 +32,32 @@
                             <th>Jenis Berkas</th>
                             <th>Rusak Pengganti</th>
                             <th>Created At</th>
-                            <th>Updated At</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        @foreach ($blankos as $blanko)
+                            <tr>
+                                <td>{{ $blanko->nomorBlanko }}</td>
+                                <td>{{ $blanko->nomorBerkas }}</td>
+                                <td>{{ $blanko->nib }}</td>
+                                <td>{{ $blanko->namaDesa }}</td>
+                                <td>{{ $blanko->tim->namaTim }}</td>
+                                <td>{{ $blanko->jenisBerkas }}</td>
+                                <td>{{ $blanko->rusakPengganti }}</td>
+                                <td>{{ $blanko->created_at }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
-            <script>
-                $(document).ready(function() {
-                    $('#blanko-table').DataTable({
-                        processing: true,
-                        serverSide: true,
-                        ajax: "{{ route('blanko.index') }}",
-                        columns: [
-                            { data: 'nomorBlanko', name: 'nomorBlanko' },
-                            { data: 'nomorBerkas', name: 'nomorBerkas' },
-                            { data: 'nib', name: 'nib' },
-                            { data: 'namaDesa', name: 'namaDesa' },
-                            { data: 'tim.namaTim', name: 'tim.namaTim' }, // Mengakses relasi untuk mendapatkan namaTim
-                            { data: 'jenisBerkas', name: 'jenisBerkas' },
-                            { data: 'rusakPengganti', name: 'rusakPengganti' },
-                            { data: 'created_at', name: 'created_at' }
-                        ]
-                    });
-                });
-            </script>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('#blanko-table').DataTable();
+    });
+</script>
+
 @include('layouts.admin.footer')

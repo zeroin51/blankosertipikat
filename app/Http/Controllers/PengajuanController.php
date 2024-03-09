@@ -113,6 +113,17 @@ class PengajuanController extends Controller
         }
     }
 
+    public function detail($kodePengajuan)
+    {
+        try {
+            $detailPengajuan = Pengajuan::where('kodePengajuan', $kodePengajuan)->get();
+
+            return view('layouts/admin/detail_pengajuan', compact('detailPengajuan'));
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Gagal mendapatkan detail pengajuan: ' . $e->getMessage()], 500);
+        }
+    }
+
     public function destroy(Pengajuan $pengajuan)
     {
         $pengajuan->delete();

@@ -10,9 +10,8 @@ class BlankoController extends Controller
     public function index()
     {
         // Mengambil semua data dari tabel Blanko
-        $blankos = Blanko::all();
-
-        // Mengembalikan view blanko.blade.php dan melewatkan data blankos ke view
+        $blankos = Blanko::with('tim')->get(); // Menggunakan eager loading untuk mendapatkan relasi tim
+        
         return view('layouts/admin/blanko', compact('blankos'));
     }
 }
