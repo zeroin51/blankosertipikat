@@ -74,6 +74,7 @@
                             success: function(response) {
                                 // Tampilkan pesan sukses atau lakukan tindakan sesuai kebutuhan
                                 alert(response.message);
+                                console.log(response.pengajuan)
                                 // Refresh tabel jika diperlukan
                                 $('#pengajuan-table').DataTable().ajax.reload();
                             },
