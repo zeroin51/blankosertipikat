@@ -17,6 +17,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KetersediaanController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\TimController;
+use App\Http\Controllers\BlankoController;
+
 
 Route::get('/', function () {
     return view('auth.login');
@@ -50,3 +52,5 @@ Route::get('/pengajuan/data', [PengajuanController::class, 'data'])->name('penga
 Route::get('/pengajuan/create', [PengajuanController::class, 'create'])->name('pengajuan.create');
 Route::post('/pengajuan', [PengajuanController::class, 'store'])->name('pengajuan.store');
 Route::put('/pengajuan/change-status/{kodePengajuan}', [PengajuanController::class, 'changeStatus'])->name('pengajuan.change-status');
+
+Route::get('/blanko', [BlankoController::class, 'index'])->name('blanko.index');
