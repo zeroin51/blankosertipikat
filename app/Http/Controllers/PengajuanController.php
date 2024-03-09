@@ -87,9 +87,26 @@ class PengajuanController extends Controller
     {
         try {
             // Ubah status pengajuan
-            Pengajuan::where('kodePengajuan', $kodePengajuan)->update(['status' => 'ACC']);
-    
-            return response()->json(['message' => 'Status pengajuan berhasil diubah'], 200);
+            // $pengajuan = Pengajuan::where('kodePengajuan', $kodePengajuan)->update(['status' => 'ACC']);
+            $pengajuan = Pengajuan::where('kodePengajuan', $kodePengajuan);
+            $pengajuan_data = $pengajuan->get();
+            
+            foreach ($pengajuan_data as $data) {
+                Blanko::create([
+                    'nomorBlanko' => $data->nomorBerkas.$data->nib,
+                    'nomorBerkas' => $data->nomorBerkas,
+                    'nib' => $data->nib,
+                    'namaDesa' => $data->namaDesa,
+                    'idTim' => $data->idTim,
+                    'jenisBerkas' => $data->jenisBerkas,
+                    'totalBidang' => $data->totalBidang,
+                    'rusakPengganti' => $data->rusakPengganti,
+                    'kodePengajuan' => $kodePengajuan
+                ]);
+            }
+            $pengajuan->update(['status' => 'ACC']);
+
+            return response()->json(['message' => 'Status pengajuan berhasil diubah', 'pengajuan' => $pengajuan_data], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Gagal mengubah status pengajuan: ' . $e->getMessage()], 500);
         }
