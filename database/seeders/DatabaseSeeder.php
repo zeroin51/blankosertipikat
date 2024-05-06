@@ -20,5 +20,33 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
             'idTim' => 10, // Ubah sesuai kebutuhan
         ]);
+
+        DB::table('tim')->insert([
+            'namaTim' => 'TIM 1',
+        ]);
+
+        DB::table('tim')->insert([
+            'namaTim' => 'TIM 2',
+        ]);
+
+        DB::table('tim')->insert([
+            'namaTim' => 'TIM 3',
+        ]);
+
+        DB::table('tim')->insert([
+            'namaTim' => 'TIM 4',
+        ]);
+
+        DB::table('tim')->insert([
+            'namaTim' => 'TIM 5',
+        ]);
+
+        DB::table('tim')->insert([
+            'namaTim' => 'Rutin',
+        ]);
+
+        DB::table('tim')->insert([
+            'namaTim' => 'Lintor',
+        ]);
     }
 }

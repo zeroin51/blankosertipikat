@@ -24,6 +24,7 @@ class KetersediaanController extends Controller
         $request->validate([
             'seriBlanko' => 'required',
             'totalBlanko' => 'required|integer',
+            'terpakai' => 'required|integer',
             'status' => 'required',
         ]);
 
@@ -32,9 +33,6 @@ class KetersediaanController extends Controller
 
         // Menyimpan data ketersediaan
         $ketersediaan->save();
-
-        // Menambahkan blanko dan mendapatkan nomor_blanko
-        $nomorBlanko = $ketersediaan->addBlanko();
 
         return redirect()->route('ketersediaan.index')->with('success', 'Data ketersediaan created successfully. Nomor blanko: ' . $nomorBlanko);
     }
@@ -49,6 +47,7 @@ class KetersediaanController extends Controller
         $request->validate([
             'seriBlanko' => 'required',
             'totalBlanko' => 'required|integer',
+            'terpakai' => 'required|integer',
             'status' => 'required',
         ]);
 

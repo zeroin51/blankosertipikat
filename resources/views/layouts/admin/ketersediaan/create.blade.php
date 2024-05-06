@@ -37,6 +37,10 @@
                     <input type="number" class="form-control" id="totalBlanko" name="totalBlanko" required>
                 </div>
                 <div class="form-group">
+                    <label for="terpakai">Terpakai</label>
+                    <input type="number" class="form-control" id="terpakai" name="terpakai" required>
+                </div>
+                <div class="form-group">
                     <label for="status">Status</label>
                     <select class="form-control" id="status" name="status" required>
                         <option value="Aktif">Aktif</option>

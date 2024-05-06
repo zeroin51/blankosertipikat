@@ -6,6 +6,7 @@ use DataTables;
 use Carbon\Carbon;
 use App\Models\Blanko;
 use App\Models\Pengajuan;
+use App\Models\Ketersediaan;
 use Illuminate\Http\Request;
 use App\Models\ViewPengajuan;
 use Illuminate\Support\Facades\DB;
@@ -87,14 +88,17 @@ class PengajuanController extends Controller
     public function changeStatus($kodePengajuan)
     {
         try {
+
+            
             // Ubah status pengajuan
             // $pengajuan = Pengajuan::where('kodePengajuan', $kodePengajuan)->update(['status' => 'ACC']);
             $pengajuan = Pengajuan::where('kodePengajuan', $kodePengajuan);
             $pengajuan_data = $pengajuan->get();
             
             foreach ($pengajuan_data as $data) {
+                $nomorBlankoBaru = Ketersediaan::where('status', 'Aktif')->first()->addBlanko();
                 Blanko::create([
-                    'nomorBlanko' => $data->nomorBerkas.$data->nib,
+                    'nomorBlanko' => $nomorBlankoBaru,
                     'nomorBerkas' => $data->nomorBerkas,
                     'nib' => $data->nib,
                     'namaDesa' => $data->namaDesa,

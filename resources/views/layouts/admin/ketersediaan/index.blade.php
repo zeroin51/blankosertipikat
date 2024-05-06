@@ -33,6 +33,7 @@
                     <tr>
                         <th>Seri Blanko</th>
                         <th>Total Blanko</th>
+                        <th>Terpakai</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -42,6 +43,7 @@
                         <tr>
                             <td>{{ $ketersediaan->seriBlanko }}</td>
                             <td>{{ $ketersediaan->totalBlanko }}</td>
+                            <td>{{ $ketersediaan->terpakai }}</td>
                             <td>{{ $ketersediaan->status }}</td>
                             <td>
                                 <a href="{{ route('ketersediaan.edit', $ketersediaan->id) }}" class="btn btn-warning">Edit</a>

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('seriBlanko');
             $table->integer('totalBlanko');
+            $table->integer('terpakai');
             $table->string('status');
             $table->timestamps();
         });

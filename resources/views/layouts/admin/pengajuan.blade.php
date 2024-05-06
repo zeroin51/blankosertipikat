@@ -44,7 +44,7 @@
                         <td>{{ $data->created_at }}</td>
                         <td>
                             <!-- Button untuk merubah status -->
-                            <button class="change-status" data-kodepengajuan="{{ $data->kodePengajuan }}">Ubah Status</button>
+                            <button class="change-status" data-kodepengajuan="{{ $data->kodePengajuan }}">ACC</button>
                             <!-- Button untuk menuju ke halaman detail -->
                             <a href="{{ route('pengajuan.detail', ['kodePengajuan' => $data->kodePengajuan]) }}" class="btn btn-primary">Detail</a>
                         </td>

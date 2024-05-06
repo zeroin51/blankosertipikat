@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pengajuan</title>
+    <title>Blanko</title>
 
     <!-- Load jQuery and DataTables CSS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -18,7 +18,7 @@
 <div class="content-wrapper">
     <div class="content">
         <div class="container-fluid">
-            <h2 class="ui header">Pengajuan</h2>
+            <h2 class="ui header">Blanko</h2>
 
             <div class="container">
                 <table id="blanko-table" class="table">

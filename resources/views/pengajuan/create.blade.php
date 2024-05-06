@@ -85,7 +85,7 @@
             });
         }
         </script>
-        <button type="button" class="btn btn-success" onclick="ambilDataSpreadsheet()">Ambil Data</button>
+        <button type="button" class="btn btn-success" onclick="ambilDataSpreadsheet()">Upload Data</button>
         </div>
     </div>
 </div>
