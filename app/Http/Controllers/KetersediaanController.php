@@ -34,7 +34,7 @@ class KetersediaanController extends Controller
         // Menyimpan data ketersediaan
         $ketersediaan->save();
 
-        return redirect()->route('ketersediaan.index')->with('success', 'Data ketersediaan created successfully. Nomor blanko: ' . $nomorBlanko);
+        return redirect()->route('ketersediaan.index')->with('success', 'Data ketersediaan created successfully.');
     }
 
     public function edit(Ketersediaan $ketersediaan)
