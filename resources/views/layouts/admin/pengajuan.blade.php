@@ -36,16 +36,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Iterasi data pengajuan di sini untuk menampilkan setiap baris -->
                     @foreach($dataPengajuan as $data)
                     <tr>
                         <td>{{ $data->kodePengajuan }}</td>
                         <td>{{ $data->tim->namaTim }}</td>
                         <td>{{ $data->created_at }}</td>
                         <td>
-                            <!-- Button untuk merubah status -->
-                            <button class="change-status" data-kodepengajuan="{{ $data->kodePengajuan }}">ACC</button>
-                            <!-- Button untuk menuju ke halaman detail -->
+                            <button class="change-status-export" data-kodepengajuan="{{ $data->kodePengajuan }}">ACC & Export</button>
                             <a href="{{ route('pengajuan.detail', ['kodePengajuan' => $data->kodePengajuan]) }}" class="btn btn-primary">Detail</a>
                         </td>
                     </tr>
@@ -54,37 +51,14 @@
             </table>
             <script>
                 $(document).ready(function() {
-                    // Mengambil token CSRF dari meta tag
                     var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-                    $('#pengajuan-table').DataTable({
-                        // Inisialisasi DataTables
-                        // Tulis kode inisialisasi DataTables di sini
-                    });
+                    $('#pengajuan-table').DataTable();
 
-                    // Tambahkan event click pada button untuk merubah status
-                    $('#pengajuan-table').on('click', '.change-status', function() {
+                    $('#pengajuan-table').on('click', '.change-status-export', function() {
                         var kodePengajuan = $(this).data('kodepengajuan');
                         
-                        // Kirim permintaan AJAX dengan menyertakan token CSRF
-                        $.ajax({
-                            url: '/pengajuan/change-status/' + kodePengajuan,
-                            method: 'PUT',
-                            headers: {
-                                'X-CSRF-TOKEN': csrfToken
-                            },
-                            success: function(response) {
-                                // Tampilkan pesan sukses atau lakukan tindakan sesuai kebutuhan
-                                alert(response.message);
-                                console.log(response.pengajuan)
-                                // Refresh tabel jika diperlukan
-                                $('#pengajuan-table').DataTable().ajax.reload();
-                            },
-                            error: function(xhr, status, error) {
-                                // Tampilkan pesan error jika diperlukan
-                                alert('Error: ' + error);
-                            }
-                        });
+                        window.location.href = '/pengajuan/change-status-and-export/' + kodePengajuan;
                     });
                 });
             </script>

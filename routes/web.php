@@ -18,6 +18,9 @@ use App\Http\Controllers\KetersediaanController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\TimController;
 use App\Http\Controllers\BlankoController;
+use App\Exports\BlankosExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PengajuanExport;
 
 
 Route::get('/', function () {
@@ -51,8 +54,13 @@ Route::get('/pengajuan', [PengajuanController::class, 'index'])->name('pengajuan
 Route::get('/pengajuan/data', [PengajuanController::class, 'data'])->name('pengajuan.data');
 Route::get('/pengajuan/create', [PengajuanController::class, 'create'])->name('pengajuan.create');
 Route::post('/pengajuan', [PengajuanController::class, 'store'])->name('pengajuan.store');
-Route::put('/pengajuan/change-status/{kodePengajuan}', [PengajuanController::class, 'changeStatus'])->name('pengajuan.change-status');
+Route::get('pengajuan/change-status-and-export/{kodePengajuan}', [PengajuanController::class, 'changeStatusAndExport'])->name('pengajuan.changeStatusAndExport');
 Route::get('/pengajuan/detail/{kodePengajuan}', [PengajuanController::class, 'detail'])->name('pengajuan.detail');
 
 Route::get('/blanko/data', [BlankoController::class, 'data'])->name('blanko.data');
 Route::get('/blanko', [BlankoController::class, 'index'])->name('blanko.index');
+
+Route::get('export-blankos', function () {
+    return Excel::download(new BlankosExport, 'blankos.xlsx');
+})->name('export.blankos');
+

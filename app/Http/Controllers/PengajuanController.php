@@ -11,6 +11,9 @@ use Illuminate\Http\Request;
 use App\Models\ViewPengajuan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PengajuanExport;
+
 
 class PengajuanController extends Controller
 {
@@ -85,16 +88,15 @@ class PengajuanController extends Controller
         }
     }
 
-    public function changeStatus($kodePengajuan)
+    public function changeStatusAndExport($kodePengajuan)
     {
-        try {
+        DB::beginTransaction(); // Memulai transaksi database
 
-            
-            // Ubah status pengajuan
-            // $pengajuan = Pengajuan::where('kodePengajuan', $kodePengajuan)->update(['status' => 'ACC']);
+        try {
+            // Mengubah status pengajuan
             $pengajuan = Pengajuan::where('kodePengajuan', $kodePengajuan);
             $pengajuan_data = $pengajuan->get();
-            
+
             foreach ($pengajuan_data as $data) {
                 $nomorBlankoBaru = Ketersediaan::where('status', 'Aktif')->first()->addBlanko();
                 Blanko::create([
@@ -111,9 +113,18 @@ class PengajuanController extends Controller
             }
             $pengajuan->update(['status' => 'ACC']);
 
-            return response()->json(['message' => 'Status pengajuan berhasil diubah', 'pengajuan' => $pengajuan_data], 200);
+            // Ekspor data ke XLSX
+            $file = Excel::download(new PengajuanExport($kodePengajuan), 'pengajuan_' . $kodePengajuan . '.xlsx');
+
+            // Hapus data pengajuan setelah file diunduh
+            $pengajuan->delete();
+
+            DB::commit(); // Komit transaksi jika semua berhasil
+
+            return $file;
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Gagal mengubah status pengajuan: ' . $e->getMessage()], 500);
+            DB::rollBack(); // Batalkan transaksi jika terjadi kesalahan
+            return response()->json(['error' => 'Gagal mengubah status pengajuan dan mengekspor data: ' . $e->getMessage()], 500);
         }
     }
 

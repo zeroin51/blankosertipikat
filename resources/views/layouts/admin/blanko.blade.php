@@ -21,6 +21,8 @@
             <h2 class="ui header">Blanko</h2>
 
             <div class="container">
+                <a href="{{ route('export.blankos') }}" class="btn btn-success mb-3">Export to XLSX</a>
+
                 <table id="blanko-table" class="table">
                     <thead>
                         <tr>
@@ -59,5 +61,6 @@
         $('#blanko-table').DataTable();
     });
 </script>
+
 
 @include('layouts.admin.footer')

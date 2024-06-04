@@ -73,14 +73,6 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="/pengajuan/create" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Input Pengajuan
-              </p>
-            </a>
-          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
